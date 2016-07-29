@@ -1,0 +1,15 @@
+{
+  "name": "hapi-common-stuff",
+  "version": "1.0.0",
+  "description": "Various utilities for hapi ",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Giovanni Lela",
+  "license": "ISC",
+  "typings": "index.d.ts",
+  "dependencies": {
+    "joi": "^9.0.4"
+  }
+}
