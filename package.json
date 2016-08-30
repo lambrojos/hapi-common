@@ -8,7 +8,7 @@
   },
   "author": "Giovanni Lela",
   "license": "ISC",
-  "typings": "src/index.d.ts",
+  "typings": "build/index.d.ts",
   "dependencies": {
     "global-tunnel": "^1.2.0",
     "hapi-config": "^0.2.2",

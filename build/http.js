@@ -1,6 +1,11 @@
 "use strict";
 const _log = require('./log');
+// import {initialize as initializeGlobalTunnel} from 'global-tunnel'
 exports.LogPlugin = _log;
+/**
+ * Shorthand for hapi-swagger return objects
+ * @type {[type]}
+ */
 exports.returnType = (schema) => {
     return {
         'hapi-swagger': {
@@ -13,6 +18,12 @@ exports.returnType = (schema) => {
     };
 };
 exports.HTTPTweaks = (server, options, next) => {
+    /**
+     * [ext description]
+     * @param  {[type]} 'onPreResponse' [description]
+     * @param  {[type]} (request,reply  [description]
+     * @return {[type]}                 [description]
+     */
     server.ext('onPreResponse', (request, reply) => {
         const res = request.response;
         if (res.isBoom) {
@@ -37,6 +48,13 @@ exports.HTTPTweaks = (server, options, next) => {
         }
         return reply.continue();
     });
+    /**
+     * Normalizes empty string, to undefined in payload
+     * objects and arrays. This is for simplifying
+     * @param  {[type]} 'onRequest'    [description]
+     * @param  {[type]} (request,reply [description]
+     * @return {[type]}                [description]
+     */
     const deleteEmpty = (payload) => {
         if (typeof payload !== 'object' || payload === null) {
             return;
@@ -47,6 +65,9 @@ exports.HTTPTweaks = (server, options, next) => {
             }
         }
     };
+    /**
+     * Applies the delete empty function to all incoming payloads
+     */
     server.ext('onPostAuth', (request, reply) => {
         if (Array.isArray(request.payload)) {
             for (const obj of request.payload) {
@@ -58,6 +79,10 @@ exports.HTTPTweaks = (server, options, next) => {
         }
         reply.continue();
     });
+    /**
+     * Intercepts a stop signal and stops the server. Returns a promise afterwards.
+     * @type {[type]}
+     */
     const shutdown = (signal) => {
         server.log(['info', 'shutdown'], 'Received ' + signal + ', gracefully stopping');
         server.stop({ timeout: 5000 }, () => {
