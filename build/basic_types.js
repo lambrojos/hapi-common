@@ -2,10 +2,6 @@
 const Joi = require('joi');
 exports.positiveInt = Joi.number().integer().min(0).optional();
 const _id = Joi.number().integer().min(0).description('Unique id');
-/**
- * Persisted and non persisted version of types are separated in order
- * to generate accurate swagger descriptions
- */
 exports.id = { id: _id };
 exports.idPersisted = { id: _id.required() };
 exports.timestamps = {

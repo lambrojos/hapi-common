@@ -2,7 +2,7 @@
   "name": "hapi-common",
   "version": "1.0.2",
   "description": "Various utilities for hapi ",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "npm test"
   },
