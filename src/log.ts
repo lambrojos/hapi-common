@@ -39,7 +39,7 @@ export let logger: Log4js.Logger = null;
  * Plugin register function object
  * @type {logPlugin}
  */
-export const LogPlugin: HapiPlugin = (server, options:Log4js.IConfig, next) => {
+export const LogPlugin: HapiPlugin = (server, options: Log4js.IConfig, next) => {
 
   /**
    * Levels supported
@@ -102,7 +102,7 @@ export const LogPlugin: HapiPlugin = (server, options:Log4js.IConfig, next) => {
       entry = `${data.request} - ${data.data.method} ${data.data.url} - ${data.data.stack}`
     }
 
-    else if(data.data && data.data.output && data.data.output.errorCode){
+    else if (data.data && data.data.output && data.data.output.errorCode){
       entry = data.data.output.errorCode += ' - ' + entry
     }
 
@@ -123,11 +123,11 @@ export const LogPlugin: HapiPlugin = (server, options:Log4js.IConfig, next) => {
 
     let msg = toLog.message || toLog.msg || toLog || ''
 
-    if(toLog.payload && toLog.payload.request) {
+    if (toLog.payload && toLog.payload.request) {
       toLog.payload.request = null
     }
 
-    if(toLog.stack) msg += toLog.stack
+    if (toLog.stack) msg += toLog.stack
 
     toLog = msg + toLog.payload ? '' : ' | ' + JSON.stringify(toLog.payload)
 
@@ -146,10 +146,10 @@ export const LogPlugin: HapiPlugin = (server, options:Log4js.IConfig, next) => {
 
     const req = <any> request.raw.req
     const entry = ''
-      + logObj.request +' - '
-      + request.method +' - '
-      + request.url.pathname +' - '
-      + req.headers['user-agent'] +' - '
+      + logObj.request + ' - '
+      + request.method + ' - '
+      + request.url.pathname + ' - '
+      + req.headers['user-agent'] + ' - '
 
     const toLog = logObjToString(logObj)
     logWithLevel(entry + ' | ' + toLog.toString(), tags, 'info')

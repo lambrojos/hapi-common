@@ -37,18 +37,18 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
 
       const output = res['output']
 
-      if(output.statusCode === 400) {
+      if (output.statusCode === 400) {
 
-        if(!output.payload.errorCode){
+        if (!output.payload.errorCode){
           const e = Boom.badRequest(res['output'].payload.message)
           e.output.payload['errorCode'] = 'ERR_VALIDATION'
           return reply(e)
         }
       }
 
-      if(output.statusCode === 401) {
+      if (output.statusCode === 401) {
         request.log(['error', 'authentication'], output.payload.message || output.payload.error, output)
-        if(!output.payload.errorCode){
+        if (!output.payload.errorCode){
           const e = Boom.unauthorized(output.payload.message)
           e.output.payload['errorCode'] = 'ERR_INVALID_JWT'
           return reply(e)
@@ -71,12 +71,12 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
    */
   const deleteEmpty = (payload: {[k: string]: any}): void => {
 
-    if(typeof payload !== 'object' || payload === null) {
+    if (typeof payload !== 'object' || payload === null) {
       return
     }
 
-    for(const k of Object.keys(payload)){
-      if(payload[k] === '') {
+    for (const k of Object.keys(payload)){
+      if (payload[k] === '') {
         payload[k] = null
       }
     }
@@ -88,8 +88,8 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
    */
   server.ext('onPostAuth', (request, reply) => {
 
-    if(Array.isArray(request.payload)) {
-      for(const obj of request.payload){
+    if (Array.isArray(request.payload)) {
+      for (const obj of request.payload){
         deleteEmpty(obj)
       }
     } else {
@@ -104,10 +104,10 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
    * @type {[type]}
    */
   const shutdown = (signal: string) => {
-    server.log(['info', 'shutdown'], 'Received '+ signal + ', gracefully stopping')
+    server.log(['info', 'shutdown'], 'Received ' + signal + ', gracefully stopping')
     server.stop({timeout: 5000}, () => {
       server.log(['info', 'shutdown'], 'HTTP server stopped')
-      if(options['onServerStop']){
+      if (options['onServerStop']){
         options['onServerStop'](server)
       }
     })
