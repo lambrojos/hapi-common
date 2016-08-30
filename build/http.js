@@ -73,4 +73,7 @@ exports.HTTPTweaks = (server, options, next) => {
     process.on('SIGABRT', () => shutdown('SIGABRT'));
     process.on('SIGTERM', () => shutdown('SIGTERM'));
 };
+exports.HTTPTweaks.attributes = {
+    name: 'Http tweaks'
+};
 //# sourceMappingURL=http.js.map

@@ -119,3 +119,8 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
   process.on ('SIGABRT',  () => shutdown('SIGABRT'))
   process.on ('SIGTERM',  () => shutdown('SIGTERM'))
 }
+
+
+HTTPTweaks.attributes = {
+  name: 'Http tweaks'
+}
