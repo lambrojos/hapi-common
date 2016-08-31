@@ -129,9 +129,10 @@ export const LogPlugin: HapiPlugin = (server, options: Log4js.IConfig, next) => 
 
     if (toLog.stack) msg += toLog.stack
 
-    toLog = msg + toLog.payload ? '' : ' | ' + JSON.stringify(toLog.payload)
-
-    return toLog
+    return (toLog.payload) ?
+      msg + ' | ' + JSON.stringify(toLog.payload)
+      :
+      msg
   }
 
   server.on('log', (logObj: any, tags: tags) => {
