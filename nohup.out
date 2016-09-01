@@ -1,0 +1,10 @@
+module.js:327
+    throw err;
+    ^
+
+Error: Cannot find module '/home/zio/code/hapi-common/index.js'
+    at Function.Module._resolveFilename (module.js:325:15)
+    at Function.Module._load (module.js:276:25)
+    at Function.Module.runMain (module.js:441:10)
+    at startup (node.js:139:18)
+    at node.js:968:3
