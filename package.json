@@ -4,7 +4,7 @@
   "description": "Various utilities for hapi ",
   "main": "build/index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha --require source-map-support/register --colors build/spec/"
   },
   "author": "Giovanni Lela",
   "license": "ISC",
@@ -12,6 +12,13 @@
   "dependencies": {
     "global-tunnel": "^1.2.0",
     "hapi-config": "^0.2.2",
-    "joi": "^9.0.4"
+    "joi": "^9.0.4",
+    "log4js": "^0.6.38",
+    "mocha": "^3.0.2",
+    "sinon": "^1.17.5"
+  },
+  "devDependencies": {
+    "hapi": "^15.0.3",
+    "source-map-support": "^0.4.2"
   }
 }

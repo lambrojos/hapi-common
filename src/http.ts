@@ -105,7 +105,7 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
    */
   const shutdown = (signal: string) => {
     server.log(['info', 'shutdown'], 'Received ' + signal + ', gracefully stopping')
-    server.stop({timeout: 5000}, () => {
+    server.root.stop({timeout: 5000}, () => {
       server.log(['info', 'shutdown'], 'HTTP server stopped')
       if (options['onServerStop']){
         options['onServerStop'](server)
@@ -118,6 +118,8 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
   process.on ('SIGQUIT',  () => shutdown('SIGQUIT'))
   process.on ('SIGABRT',  () => shutdown('SIGABRT'))
   process.on ('SIGTERM',  () => shutdown('SIGTERM'))
+
+  next()
 }
 
 
