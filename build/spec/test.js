@@ -1,3 +1,4 @@
+// needs many many more tests. will be added when stuff gets broken or modified
 "use strict";
 const Hapi = require('hapi');
 const sinon_1 = require('sinon');

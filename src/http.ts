@@ -1,6 +1,7 @@
 import * as _log from './log'
 import {HapiPlugin} from '../typings/typings.d'
 import {Schema} from 'joi'
+import * as Boom from 'boom'
 // import {initialize as initializeGlobalTunnel} from 'global-tunnel'
 
 export const LogPlugin = _log
@@ -22,7 +23,6 @@ export const returnType = (schema: Schema) => {
 }
 
 export const HTTPTweaks: HapiPlugin = (server, options, next) => {
-
 
   /**
    * [ext description]

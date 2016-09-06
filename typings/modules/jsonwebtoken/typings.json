@@ -1,0 +1,11 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/types/npm-jsonwebtoken/756a6f6b0c599f6f3c9c20183e118f15a8b641cf/typings.json",
+    "raw": "registry:npm/jsonwebtoken#7.1.8+20160811031426",
+    "main": "index.d.ts",
+    "version": "7.1.8",
+    "name": "jsonwebtoken",
+    "type": "typings"
+  }
+}

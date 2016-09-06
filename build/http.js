@@ -1,5 +1,6 @@
 "use strict";
 const _log = require('./log');
+const Boom = require('boom');
 exports.LogPlugin = _log;
 exports.returnType = (schema) => {
     return {

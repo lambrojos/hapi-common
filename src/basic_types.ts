@@ -21,6 +21,6 @@ export const timestampsRequired: Joi.SchemaMap = {
   updated_at: Joi.date().required().description('Last update')
 }
 
-export const bool = Joi.any().valid([0,1,true, false])
+export const bool = Joi.any().valid([0, 1, true, false])
 export const saneString = Joi.string().max(255).replace(/\0/gi, '')
 export const saneText = Joi.string().max(1024).replace(/\0/gi, '')
