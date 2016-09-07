@@ -15,7 +15,7 @@ import * as hapiAuthJWT from 'hapi-auth-jwt2'
  */
 export const enum SESSION_TYPE {
   login = 0,
-  onetime = 0
+  onetime = 1
 }
 
 const SESSION_DURATION = 7 * 24 * 60 * 60

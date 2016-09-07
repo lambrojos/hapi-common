@@ -9,7 +9,7 @@ import { Server, Request } from 'hapi';
  */
 export declare const enum SESSION_TYPE {
     login = 0,
-    onetime = 0,
+    onetime = 1,
 }
 /**
  * Creates a session token for a user
