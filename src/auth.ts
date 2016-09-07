@@ -61,7 +61,7 @@ export const createSession = (
   sessionType: SESSION_TYPE,
   tx?: Transaction,
   duration?: number,
-  additionalPayload?: number
+  additionalPayload?: any
 ): Promise<string> =>
 
   (

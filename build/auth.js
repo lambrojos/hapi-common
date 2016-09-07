@@ -5,17 +5,16 @@ const JWT = require('jsonwebtoken');
 const http_1 = require('./http');
 const joi_1 = require('joi');
 const hapiAuthJWT = require('hapi-auth-jwt2');
-(function (SESSION_TYPE) {
-    SESSION_TYPE[SESSION_TYPE["login"] = 0] = "login";
-    SESSION_TYPE[SESSION_TYPE["onetime"] = 0] = "onetime";
-})(exports.SESSION_TYPE || (exports.SESSION_TYPE = {}));
-var SESSION_TYPE = exports.SESSION_TYPE;
 const SESSION_DURATION = 7 * 24 * 60 * 60;
 const SESSION_GC_INTERVAL = 60 * 60 * 1000;
 let userDAO = null;
 let sessionDAO = null;
 let secret = null;
-exports.createSession = (user, sessionType, tx, duration, additionalPayload) => (sessionType === 0 ?
+/**
+ * Creates a session token for a user
+ * @type {[type]}
+ */
+exports.createSession = (user, sessionType, tx, duration, additionalPayload) => (sessionType === 0 /* login */ ?
     sessionDAO.del({ user_id: user.id }, tx) : Promise.resolve())
     .then(() => sessionDAO.create({
     exp: duration || new Date().getTime() + SESSION_DURATION,
@@ -27,9 +26,16 @@ exports.createSession = (user, sessionType, tx, duration, additionalPayload) => 
     const a = JWT.sign(Object.assign(session, additionalPayload), secret);
     return a;
 });
+/**
+ * Deletes expired sessions, where the exp claim contains a past timestamp
+ */
 exports.sessionGC = (server) => sessionDAO.del({})
     .where('exp', '<', new Date().getTime())
     .then(nDeleted => server.log(['info', 'GC'], 'Session GC has run,' + nDeleted + ' expired sessions removed'));
+/**
+ * Very simple session validator, just checks that a session record exists and is not expired,
+ * Session.find() ensures that the expiration date is not in the past
+ */
 exports.validateSession = (decoded, request, cb) => sessionDAO
     .count({ where: { id: decoded.id } })
     .andWhere('exp', '>', new Date().getTime())
