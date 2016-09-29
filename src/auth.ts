@@ -18,7 +18,7 @@ export const enum SESSION_TYPE {
   onetime = 1
 }
 
-const SESSION_DURATION = 7 * 24 * 60 * 60
+const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000
 const SESSION_GC_INTERVAL = 60 * 60 * 1000
 
 /**

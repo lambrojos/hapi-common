@@ -1,17 +1,5 @@
 'use strict';
-/**
- * @module log
- * Adds log4js integration
- * - every request is logged
- * - intercept api log event originating from server.log and logs them
- *
- * Requires Hapi Config installed
- */
 const Log4js = require('log4js');
-/**
- * Convience method to structure log with an object containing `msg: string` and `payload: any`
- * If request parameter is an Hapi.Request instance payload is automatically extracted.
- */
 exports.buildLogObject = (msg, request) => {
     request = request || {};
     return {
@@ -19,33 +7,11 @@ exports.buildLogObject = (msg, request) => {
         payload: request.payload ? request.payload : request
     };
 };
-/**
- * Expose logger anyway, to use indepentently from hapi events
- * @type {Log4js.Logger}
- */
 exports.logger = null;
-/**
- * Plugin register function object
- * @type {logPlugin}
- */
 exports.LogPlugin = (server, options, next) => {
-    /**
-     * Levels supported
-     * @type {Array<string>}
-     */
     const LEVELS = ['trace', 'debug', 'info', 'warn', 'error', 'fatal'];
     Log4js.configure(options);
     exports.logger = Log4js.getLogger('Time4Sign');
-    /**
-     * Gets the log level based on tags.
-     * If the tags object contains a key with the name  of a logging level (See LEVELS)
-     * that string will be returned. Otherwise string passed as defaultLevel will
-     * be returned
-     *
-     * @param  {any}   tags          Hapi tags object
-     * @param  {string} defaultLevel If the tag object does not contain a level add this
-     * @return {string}              The level for this set of tags
-     */
     const getLevel = (tags, defaultLevel) => {
         for (const level of LEVELS) {
             if (tags[level]) {
@@ -54,14 +20,6 @@ exports.LogPlugin = (server, options, next) => {
         }
         return defaultLevel;
     };
-    /**
-     * Logs an entry, at level defaultLevel if tags does not contain a valid level.
-     * In that case, that will be the level
-     * @param  {string} entry        The logged entry
-     * @param  {any}    tags         Log event tags
-     * @param  {string} defaultLevel If it is impossible to discern a level from the tags,
-     *                               this will be the level
-     */
     const logWithLevel = (entry, tags, defaultLevel) => {
         const level = getLevel(tags, defaultLevel);
         switch (level) {
@@ -103,11 +61,6 @@ exports.LogPlugin = (server, options, next) => {
             logWithLevel(entry, tags, 'info');
         }
     });
-    /**
-     * Internal function that parse the log object of type:
-     * {msg: 'a text', payload: {somedata:true}}
-     * It gracefully handle also a plain string. See documentation.
-     */
     const logObjToString = (logObj) => {
         let toLog;
         toLog = logObj.data || logObj;
