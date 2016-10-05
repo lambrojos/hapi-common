@@ -46,7 +46,7 @@ export const HTTPTweaks: HapiPlugin = (server, options, next) => {
         }
       }
 
-      if (output.statusCode === 401) {
+      if (output.statusCode === 401 && !output.headers['WWW-Authenticate']) {
         request.log(['error', 'authentication'], output.payload.message || output.payload.error, output)
         if (!output.payload.errorCode){
           const e = Boom.unauthorized(output.payload.message)
