@@ -1,6 +1,6 @@
 {
   "name": "hapi-common",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Various utilities for hapi ",
   "main": "build/index.js",
   "scripts": {
