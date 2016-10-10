@@ -25,7 +25,7 @@ exports.HTTPTweaks = (server, options, next) => {
                     return reply(e);
                 }
             }
-            if (output.statusCode === 401 && !output.headers['WWW-Authenticate']) {
+            if (output.statusCode === 401 && output.headers['WWW-Authenticate'] === 'Token') {
                 request.log(['error', 'authentication'], output.payload.message || output.payload.error, output);
                 if (!output.payload.errorCode) {
                     const e = Boom.unauthorized(output.payload.message);
