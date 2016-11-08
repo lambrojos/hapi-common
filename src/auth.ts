@@ -66,7 +66,7 @@ export const createSession = (
 
   (
     sessionType === SESSION_TYPE.login ?
-    sessionDAO.del({user_id: user.id}, tx) : Promise.resolve()
+    sessionDAO.del({user_id: user.id, type: SESSION_TYPE.login}, tx) : Promise.resolve()
   )
 
   .then( () => sessionDAO.create({

@@ -1,10 +1,10 @@
 "use strict";
-const Promise = require('bluebird');
-const uuid_1 = require('uuid');
-const JWT = require('jsonwebtoken');
-const http_1 = require('./http');
-const joi_1 = require('joi');
-const hapiAuthJWT = require('hapi-auth-jwt2');
+const Promise = require("bluebird");
+const uuid_1 = require("uuid");
+const JWT = require("jsonwebtoken");
+const http_1 = require("./http");
+const joi_1 = require("joi");
+const hapiAuthJWT = require("hapi-auth-jwt2");
 (function (SESSION_TYPE) {
     SESSION_TYPE[SESSION_TYPE["login"] = 0] = "login";
     SESSION_TYPE[SESSION_TYPE["onetime"] = 1] = "onetime";
@@ -16,7 +16,7 @@ let userDAO = null;
 let sessionDAO = null;
 let secret = null;
 exports.createSession = (user, sessionType, tx, duration, additionalPayload) => (sessionType === 0 ?
-    sessionDAO.del({ user_id: user.id }, tx) : Promise.resolve())
+    sessionDAO.del({ user_id: user.id, type: 0 }, tx) : Promise.resolve())
     .then(() => sessionDAO.create({
     exp: duration || new Date().getTime() + SESSION_DURATION,
     id: uuid_1.v4(),
