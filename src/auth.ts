@@ -135,20 +135,6 @@ export const JWTAuth: HapiPlugin = (server, options, next) => {
     })
   })
 
-  server.route({
-    config: {
-      description: 'Gets the current user',
-      notes: `Gets current user data. A good way to check if a token is still valid.`,
-      tags: ['api'],
-      plugins: returnType(object(sessionDAO.schema).label('User')),
-    },
-    handler:  (request, reply) => {
-      userDAO.findOne({id: request.auth.credentials.user_id}).then(reply)
-    },
-    method: 'GET',
-    path: '/me'
-  })
-
   next()
 }
 
