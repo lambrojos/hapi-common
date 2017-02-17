@@ -128,10 +128,11 @@ export const JWTAuth: HapiPlugin = (server, options, next) => {
 
     secret = config.get('JWT_SECRET')
 
-    server.auth.strategy('jwt', 'jwt', true, {
+    server.auth.strategy('jwt', 'jwt', false, {
       key: config.get('JWT_SECRET'),
       validateFunc: validateSession,
-      verifyOptions: { algorithms: [ 'HS256' ] }
+      verifyOptions: { algorithms: [ 'HS256' ] },
+      errorFunc: (error) => {error.message = null; return error}
     })
   })
 

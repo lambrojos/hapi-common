@@ -43,10 +43,11 @@ exports.JWTAuth = (server, options, next) => {
             return next(err);
         }
         secret = config.get('JWT_SECRET');
-        server.auth.strategy('jwt', 'jwt', true, {
+        server.auth.strategy('jwt', 'jwt', false, {
             key: config.get('JWT_SECRET'),
             validateFunc: exports.validateSession,
-            verifyOptions: { algorithms: ['HS256'] }
+            verifyOptions: { algorithms: ['HS256'] },
+            errorFunc: (error) => { error.message = null; return error; }
         });
     });
     next();

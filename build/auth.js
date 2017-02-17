@@ -1,19 +1,20 @@
 "use strict";
-const Promise = require('bluebird');
-const uuid_1 = require('uuid');
-const JWT = require('jsonwebtoken');
-const hapiAuthJWT = require('hapi-auth-jwt2');
+const Promise = require("bluebird");
+const uuid_1 = require("uuid");
+const JWT = require("jsonwebtoken");
+const hapiAuthJWT = require("hapi-auth-jwt2");
+var SESSION_TYPE;
+(function (SESSION_TYPE) {
+    SESSION_TYPE[SESSION_TYPE["login"] = 0] = "login";
+    SESSION_TYPE[SESSION_TYPE["onetime"] = 1] = "onetime";
+})(SESSION_TYPE = exports.SESSION_TYPE || (exports.SESSION_TYPE = {}));
 const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000;
 const SESSION_GC_INTERVAL = 60 * 60 * 1000;
 let userDAO = null;
 let sessionDAO = null;
 let secret = null;
-/**
- * Creates a session token for a user
- * @type {[type]}
- */
-exports.createSession = (user, sessionType, tx, duration, additionalPayload) => (sessionType === 0 /* login */ ?
-    sessionDAO.del({ user_id: user.id, type: 0 /* login */ }, tx) : Promise.resolve())
+exports.createSession = (user, sessionType, tx, duration, additionalPayload) => (sessionType === 0 ?
+    sessionDAO.del({ user_id: user.id, type: 0 }, tx) : Promise.resolve())
     .then(() => sessionDAO.create({
     exp: duration || new Date().getTime() + SESSION_DURATION,
     id: uuid_1.v4(),
@@ -24,16 +25,9 @@ exports.createSession = (user, sessionType, tx, duration, additionalPayload) => 
     const a = JWT.sign(Object.assign(session, additionalPayload), secret);
     return a;
 });
-/**
- * Deletes expired sessions, where the exp claim contains a past timestamp
- */
 exports.sessionGC = (server) => sessionDAO.del({})
     .where('exp', '<', new Date().getTime())
     .then(nDeleted => server.log(['info', 'GC'], 'Session GC has run,' + nDeleted + ' expired sessions removed'));
-/**
- * Very simple session validator, just checks that a session record exists and is not expired,
- * Session.find() ensures that the expiration date is not in the past
- */
 exports.validateSession = (decoded, request, cb) => sessionDAO
     .count({ where: { id: decoded.id } })
     .andWhere('exp', '>', new Date().getTime())
@@ -49,10 +43,11 @@ exports.JWTAuth = (server, options, next) => {
             return next(err);
         }
         secret = config.get('JWT_SECRET');
-        server.auth.strategy('jwt', 'jwt', true, {
+        server.auth.strategy('jwt', 'jwt', false, {
             key: config.get('JWT_SECRET'),
             validateFunc: exports.validateSession,
-            verifyOptions: { algorithms: ['HS256'] }
+            verifyOptions: { algorithms: ['HS256'] },
+            errorFunc: () => { },
         });
     });
     next();
